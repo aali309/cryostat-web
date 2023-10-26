@@ -40,14 +40,8 @@ import {
   AlertActionCloseButton,
   AlertGroup,
   AlertVariant,
-  ApplicationLauncher,
-  ApplicationLauncherItem,
   Brand,
   Button,
-  Dropdown,
-  DropdownGroup,
-  DropdownItem,
-  DropdownToggle,
   Icon,
   Label,
   Masthead,
@@ -67,7 +61,16 @@ import {
   ToolbarContent,
   ToolbarGroup,
   ToolbarItem,
+  PageSidebarBody,
 } from '@patternfly/react-core';
+import {
+  ApplicationLauncher,
+  ApplicationLauncherItem,
+  Dropdown,
+  DropdownGroup,
+  DropdownItem,
+  DropdownToggle,
+} from '@patternfly/react-core/deprecated';
 import {
   BarsIcon,
   BellIcon,
@@ -233,7 +236,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
   // prevent page resize to close nav during tour
   const onPageResize = React.useCallback(
-    (props: { mobileView: boolean; windowSize: number }) => {
+    (_, props: { mobileView: boolean; windowSize: number }) => {
       if (joyState.run === false) {
         setIsMobileView(props.mobileView);
         setIsNavOpen(!props.mobileView);
@@ -298,7 +301,11 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const UserInfoToggle = React.useMemo(
     () => (
       <DropdownToggle onToggle={handleUserInfoToggle} toggleIndicator={CaretDownIcon}>
-        {username || <UserIcon color="white" size="sm" />}
+        {username || (
+          <Icon size="sm">
+            <UserIcon color="white" />
+          </Icon>
+        )}
       </DropdownToggle>
     ),
     [username, handleUserInfoToggle],
@@ -365,18 +372,22 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     );
   }, []);
 
-  const HeaderToolbar = React.useMemo(
+  const headerToolbar = React.useMemo(
     () => (
       <>
         <Toolbar isFullHeight isStatic>
           <ToolbarContent>
-            <ToolbarGroup variant="icon-button-group" alignment={{ default: 'alignRight' }}>
+            <ToolbarGroup variant="icon-button-group" align={{ default: 'alignRight' }}>
               <FeatureFlag strict level={FeatureLevel.DEVELOPMENT}>
                 <ToolbarItem>
                   <Button
                     variant="plain"
                     onClick={() => notificationsContext.info(`test ${+Date.now()}`)}
-                    icon={<PlusCircleIcon size="sm" />}
+                    icon={
+                      <Icon size="sm">
+                        <PlusCircleIcon />
+                      </Icon>
+                    }
                   />
                 </ToolbarItem>
               </FeatureFlag>
@@ -401,7 +412,9 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                     data-quickstart-id="settings-link"
                     component={(props) => <Link {...props} to="/settings" />}
                   >
-                    <CogIcon size="sm" />
+                    <Icon size="sm">
+                      <CogIcon />
+                    </Icon>
                   </Button>
                 </ToolbarItem>
                 <ToolbarItem>
@@ -448,7 +461,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     ],
   );
 
-  const Header = React.useMemo(
+  const header = React.useMemo(
     () => (
       <>
         <Masthead>
@@ -456,8 +469,8 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
             <PageToggleButton
               variant="plain"
               aria-label="Navigation"
-              isNavOpen={isNavOpen}
-              onNavToggle={onNavToggle}
+              isSidebarOpen={isNavOpen}
+              onSidebarToggle={onNavToggle}
               data-quickstart-id="nav-toggle-btn"
               data-tour-id="nav-toggle-btn"
             >
@@ -470,15 +483,14 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 <Brand alt="Cryostat" src={cryostatLogo} className="cryostat-logo" />
               </Link>
             </MastheadBrand>
-
             <DynamicFeatureFlag levels={[FeatureLevel.DEVELOPMENT, FeatureLevel.BETA]} component={levelBadge} />
           </MastheadMain>
-          <MastheadContent>{HeaderToolbar}</MastheadContent>
+          <MastheadContent>{headerToolbar}</MastheadContent>
         </Masthead>
         <AboutCryostatModal isOpen={aboutModalOpen} onClose={handleCloseAboutModal} />
       </>
     ),
-    [isNavOpen, aboutModalOpen, HeaderToolbar, handleCloseAboutModal, onNavToggle, levelBadge],
+    [isNavOpen, aboutModalOpen, headerToolbar, handleCloseAboutModal, onNavToggle, levelBadge],
   );
 
   const isActiveRoute = React.useCallback(
@@ -538,7 +550,11 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   );
 
   const Sidebar = React.useMemo(
-    () => <PageSidebar theme="dark" nav={Navigation} isNavOpen={isNavOpen} />,
+    () => (
+      <PageSidebar theme="dark" isSidebarOpen={isNavOpen}>
+        <PageSidebarBody>{Navigation}</PageSidebarBody>
+      </PageSidebar>
+    ),
     [Navigation, isNavOpen],
   );
 
@@ -585,7 +601,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         </AlertGroup>
         <Page
           mainContainerId="primary-app-container"
-          header={Header}
+          header={header}
           sidebar={Sidebar}
           notificationDrawer={NotificationDrawer}
           isNotificationDrawerExpanded={isNotificationDrawerExpanded}

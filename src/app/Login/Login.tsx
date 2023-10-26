@@ -18,16 +18,7 @@ import { FeatureFlag } from '@app/Shared/Components/FeatureFlag';
 import { AuthMethod, FeatureLevel } from '@app/Shared/Services/service.types';
 import { ServiceContext } from '@app/Shared/Services/Services';
 import { useSubscriptions } from '@app/utils/hooks/useSubscriptions';
-import {
-  Card,
-  CardActions,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  PageSection,
-  Text,
-} from '@patternfly/react-core';
+import { Card, CardBody, CardFooter, CardHeader, CardTitle, PageSection, Text } from '@patternfly/react-core';
 import * as React from 'react';
 import { NotificationsContext } from '../Shared/Services/Notifications.service';
 import { BasicAuthDescriptionText, BasicAuthForm } from './BasicAuthForm';
@@ -89,11 +80,18 @@ export const Login: React.FC<LoginProps> = (_) => {
   return (
     <PageSection>
       <Card>
-        <CardHeader>
+        <CardHeader
+          actions={{
+            actions: (
+              <>
+                <FeatureFlag level={FeatureLevel.BETA}>{React.createElement(Language.content, null)}</FeatureFlag>
+              </>
+            ),
+            hasNoOffset: false,
+            className: undefined,
+          }}
+        >
           <CardTitle>Login</CardTitle>
-          <CardActions>
-            <FeatureFlag level={FeatureLevel.BETA}>{React.createElement(Language.content, null)}</FeatureFlag>
-          </CardActions>
         </CardHeader>
         <CardBody>{loginForm}</CardBody>
         <CardFooter>{descriptionText}</CardFooter>

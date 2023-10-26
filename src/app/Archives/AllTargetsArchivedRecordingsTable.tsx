@@ -31,11 +31,11 @@ import {
   Checkbox,
   EmptyState,
   EmptyStateIcon,
-  Title,
+  EmptyStateHeader,
 } from '@patternfly/react-core';
 import { SearchIcon } from '@patternfly/react-icons';
 import {
-  TableComposable,
+  Table /* data-codemods */,
   Th,
   Thead,
   Tbody,
@@ -224,10 +224,15 @@ export const AllTargetsArchivedRecordingsTable: React.FC<AllTargetsArchivedRecor
   );
 
   const handleSearchInput = React.useCallback(
-    (searchInput: string) => {
+    (_, searchInput: string) => {
       setSearchText(searchInput);
     },
     [setSearchText],
+  );
+
+  const handleHideEmptyTarget = React.useCallback(
+    (_, hide: boolean) => setHideEmptyTargets(hide),
+    [setHideEmptyTargets],
   );
 
   const handleSearchInputClear = React.useCallback(() => {
@@ -380,17 +385,18 @@ export const AllTargetsArchivedRecordingsTable: React.FC<AllTargetsArchivedRecor
     view = (
       <>
         <EmptyState>
-          <EmptyStateIcon icon={SearchIcon} />
-          <Title headingLevel="h4" size="lg">
-            No Archived Recordings
-          </Title>
+          <EmptyStateHeader
+            titleText="No Archived Recordings"
+            icon={<EmptyStateIcon icon={SearchIcon} />}
+            headingLevel="h4"
+          />
         </EmptyState>
       </>
     );
   } else {
     view = (
       <>
-        <TableComposable aria-label="all-targets-table">
+        <Table aria-label="all-targets-table">
           <Thead>
             <Tr>
               <Th key="table-header-expand" />
@@ -406,7 +412,7 @@ export const AllTargetsArchivedRecordingsTable: React.FC<AllTargetsArchivedRecor
             </Tr>
           </Thead>
           <Tbody>{rowPairs}</Tbody>
-        </TableComposable>
+        </Table>
       </>
     );
   }
@@ -430,7 +436,7 @@ export const AllTargetsArchivedRecordingsTable: React.FC<AllTargetsArchivedRecor
               <Checkbox
                 name={`all-targets-hide-check`}
                 label="Hide targets with zero recordings"
-                onChange={setHideEmptyTargets}
+                onChange={handleHideEmptyTarget}
                 isChecked={hideEmptyTargets}
                 id={`all-targets-hide-check`}
                 aria-label={`all-targets-hide-check`}

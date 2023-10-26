@@ -18,7 +18,16 @@ import { NotificationsContext } from '@app/Shared/Services/Notifications.service
 import { AuthMethod, SessionState } from '@app/Shared/Services/service.types';
 import { ServiceContext } from '@app/Shared/Services/Services';
 import { useSubscriptions } from '@app/utils/hooks/useSubscriptions';
-import { Button, EmptyState, EmptyStateBody, EmptyStateIcon, Text, TextVariants, Title } from '@patternfly/react-core';
+import {
+  Button,
+  EmptyState,
+  EmptyStateBody,
+  EmptyStateIcon,
+  Text,
+  TextVariants,
+  EmptyStateHeader,
+  EmptyStateFooter,
+} from '@patternfly/react-core';
 import { LockIcon } from '@patternfly/react-icons';
 import * as React from 'react';
 import { combineLatest } from 'rxjs';
@@ -51,10 +60,11 @@ export const OpenShiftPlaceholderAuthForm: React.FC<FormProps> = ({ onSubmit }) 
 
   const permissionDenied = (
     <EmptyState>
-      <EmptyStateIcon variant="container" component={LockIcon} />
-      <Title size="lg" headingLevel="h4">
-        Access permissions required
-      </Title>
+      <EmptyStateHeader
+        titleText="Access permissions required"
+        icon={<EmptyStateIcon icon={LockIcon} />}
+        headingLevel="h4"
+      />
       <EmptyStateBody>
         <Text>
           {`To continue, add permissions to your current account or login with a
@@ -68,9 +78,11 @@ export const OpenShiftPlaceholderAuthForm: React.FC<FormProps> = ({ onSubmit }) 
           Cryostat Operator README.
         </Text>
       </EmptyStateBody>
-      <Button variant="primary" onClick={handleSubmit}>
-        Retry Login
-      </Button>
+      <EmptyStateFooter>
+        <Button variant="primary" onClick={handleSubmit}>
+          Retry Login
+        </Button>
+      </EmptyStateFooter>
     </EmptyState>
   );
 
