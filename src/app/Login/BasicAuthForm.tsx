@@ -16,7 +16,19 @@
 
 import { AuthMethod } from '@app/Shared/Services/service.types';
 import { ServiceContext } from '@app/Shared/Services/Services';
-import { ActionGroup, Button, Checkbox, Form, FormGroup, Text, TextInput, TextVariants } from '@patternfly/react-core';
+import {
+  ActionGroup,
+  Button,
+  Checkbox,
+  Form,
+  FormGroup,
+  FormHelperText,
+  HelperText,
+  HelperTextItem,
+  Text,
+  TextInput,
+  TextVariants,
+} from '@patternfly/react-core';
 import { Base64 } from 'js-base64';
 import * as React from 'react';
 import { map } from 'rxjs/operators';
@@ -85,7 +97,12 @@ export const BasicAuthForm: React.FC<FormProps> = ({ onSubmit }) => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <FormGroup label="Username" isRequired fieldId="username" helperText="Please provide your username">
+      <FormGroup label="Username" isRequired fieldId="username">
+        <FormHelperText>
+          <HelperText>
+            <HelperTextItem>Please provide your username</HelperTextItem>
+          </HelperText>
+        </FormHelperText>
         <TextInput
           isRequired
           type="text"
@@ -97,7 +114,12 @@ export const BasicAuthForm: React.FC<FormProps> = ({ onSubmit }) => {
           onKeyDown={handleKeyDown}
         />
       </FormGroup>
-      <FormGroup label="Password" isRequired fieldId="password" helperText="Please provide your password">
+      <FormGroup label="Password" isRequired fieldId="password">
+        <FormHelperText>
+          <HelperText>
+            <HelperTextItem>Please provide your password</HelperTextItem>
+          </HelperText>
+        </FormHelperText>
         <TextInput
           isRequired
           type="password"
