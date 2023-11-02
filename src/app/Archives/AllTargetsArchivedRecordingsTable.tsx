@@ -34,16 +34,7 @@ import {
   EmptyStateHeader,
 } from '@patternfly/react-core';
 import { SearchIcon } from '@patternfly/react-icons';
-import {
-  Table /* data-codemods */,
-  Th,
-  Thead,
-  Tbody,
-  Tr,
-  Td,
-  ExpandableRowContent,
-  SortByDirection,
-} from '@patternfly/react-table';
+import { Table, Th, Thead, Tbody, Tr, Td, ExpandableRowContent, SortByDirection } from '@patternfly/react-table';
 import * as React from 'react';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
