@@ -162,7 +162,9 @@ export const RuleUploadModal: React.FC<RuleUploadModalProps> = ({ onClose, ...pr
             submitRef={submitRef}
             abortRef={abortRef}
             uploading={uploading}
-            dropZoneAccepts={['application/json']}
+            dropZoneAccepts={{
+              'application/json': ['.json'],
+            }}
             displayAccepts={['JSON']}
             onFileSubmit={onFileSubmit}
             onFilesChange={onFilesChange}
